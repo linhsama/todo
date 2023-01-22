@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:elevation="10dp"
+    app:cardElevation="10dp"
+    android:layout_margin="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="5dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/dateTv"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="01-01-2022"
+                android:gravity="center"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/ubuntu"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/taskTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Task"
+                android:textSize="16dp"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:maxLines="3"
+                android:textColor="#000"
+                android:fontFamily="@font/ubuntu"/>
+
+
+            <TextView
+                android:id="@+id/descriptionTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#000"
+                android:padding="6dp"
+                android:text="Description"
+                android:textSize="14dp"
+                android:maxLines="5"
+                android:fontFamily="@font/ubuntu"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
