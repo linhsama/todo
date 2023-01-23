@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
     private String task;
     private String description;
 
-    private static Dialog dialog_load;
 
     private FirebaseRecyclerAdapter<Model, MyViewHolder> adapter;
     @SuppressLint("MissingInflatedId")
@@ -94,12 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Dialog
-        dialog_load = new Dialog(MainActivity.this);
-        dialog_load.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog_load.setContentView(R.layout.dialog_wait);
-        dialog_load.setCanceledOnTouchOutside(false);
-        dialog_load.show();
     }
 
     private void addTask() {
@@ -240,9 +233,6 @@ public class MainActivity extends AppCompatActivity {
             yearTextView.setText((date.split("-")[2]).split(" ")[0]);
             dayTextView.setText((date.split("-")[0] + "/" + date.split("-")[1]));
             timeTextView.setText(date.split(" ")[1]);
-            if(dialog_load.isShowing()){
-                dialog_load.dismiss();
-            }
         }
     }
 
