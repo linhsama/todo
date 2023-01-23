@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,6 +56,8 @@ public class MainActivity extends AppCompatActivity {
     private String task;
     private String description;
 
+    private static Dialog dialog_load;
+
     private FirebaseRecyclerAdapter<Model, MyViewHolder> adapter;
     @SuppressLint("MissingInflatedId")
     @Override
@@ -89,6 +93,13 @@ public class MainActivity extends AppCompatActivity {
                 addTask();
             }
         });
+
+        // Dialog
+        dialog_load = new Dialog(MainActivity.this);
+        dialog_load.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog_load.setContentView(R.layout.dialog_wait);
+        dialog_load.setCanceledOnTouchOutside(false);
+        dialog_load.show();
     }
 
     private void addTask() {
@@ -138,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                     Model model = new Model(mTask, mDescription, id, mDate, email);
-                    reference.child(mDate).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    reference.child(id).setValue(model).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
@@ -164,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-
         FirebaseRecyclerOptions<Model> options = new FirebaseRecyclerOptions.Builder<Model>()
                 .setQuery(reference, Model.class)
                 .build();
@@ -179,10 +189,16 @@ public class MainActivity extends AppCompatActivity {
                 holder.mView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        key = getRef(position - 1).getKey();
-                        task = model.getTask();
-                        description = model.getDescription();
-                        updateTask(key, task, description);
+                        try{
+                            key = getRef(position).getKey();
+                            task = model.getTask();
+                            description = model.getDescription();
+                            updateTask(key, task, description);
+                        }catch (Exception e){
+                            adapter.notifyDataSetChanged();
+                            e.printStackTrace();
+                        }
+
                     }
                 });
             }
@@ -218,9 +234,15 @@ public class MainActivity extends AppCompatActivity {
         }
 
         public void setDate(String date) {
-            TextView dateTextView = mView.findViewById(R.id.dateTv);
-            dateTextView.setText(date);
-
+            TextView yearTextView = mView.findViewById(R.id.yearTv);
+            TextView dayTextView = mView.findViewById(R.id.dayTv);
+            TextView timeTextView = mView.findViewById(R.id.timeTv);
+            yearTextView.setText((date.split("-")[2]).split(" ")[0]);
+            dayTextView.setText((date.split("-")[0] + "/" + date.split("-")[1]));
+            timeTextView.setText(date.split(" ")[1]);
+            if(dialog_load.isShowing()){
+                dialog_load.dismiss();
+            }
         }
     }
 
